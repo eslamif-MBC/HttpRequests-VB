@@ -1,4 +1,5 @@
-﻿Imports System.Net.Http
+﻿Imports System.Net
+Imports System.Net.Http
 
 Public Class PostRequestWithBasicAuth
     Inherits PostRequest
@@ -11,7 +12,7 @@ Public Class PostRequestWithBasicAuth
     ''' <param name="username"></param>
     ''' <param name="password"></param>
     ''' <returns>Tuple: item1 = HttpStatusCode, item2 = response</returns>
-    Public Function PostWithBasicAuth(ByVal uri As String, ByVal queryString As String, ByVal username As String, ByVal password As String) As Tuple(Of String, String)
+    Public Function PostWithBasicAuth(ByVal uri As String, ByVal queryString As String, ByVal username As String, ByVal password As String) As Tuple(Of HttpStatusCode, String)
         If String.IsNullOrEmpty(uri) OrElse String.IsNullOrEmpty(queryString) OrElse String.IsNullOrEmpty(username) OrElse String.IsNullOrEmpty(password) Then
             Debug.WriteLine("PostWithBasicAuth(): invalid arguments.")
             Return Nothing

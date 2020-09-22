@@ -12,7 +12,7 @@ Public Class PostRequest
     ''' <param name="uri"></param>
     ''' <param name="queryString"></param>
     ''' <returns>Tuple: item1 = HttpStatusCode, item2 = response</returns>
-    Public Overridable Function Post(ByVal uri As String, ByVal queryString As String) As Tuple(Of String, String)
+    Public Overridable Function Post(ByVal uri As String, ByVal queryString As String) As Tuple(Of HttpStatusCode, String)
         If String.IsNullOrEmpty(uri) OrElse String.IsNullOrEmpty(queryString) Then
             Debug.WriteLine("Post(): invalid arguments.")
             Return Nothing
@@ -39,7 +39,7 @@ Public Class PostRequest
     ''' </summary>
     ''' <param name="request"></param>
     ''' <returns>Tuple: item1 = HttpStatusCode, item2 = response</returns>
-    Protected Function PostRequest(ByVal request As HttpRequestMessage) As Tuple(Of String, String)
+    Protected Function PostRequest(ByVal request As HttpRequestMessage) As Tuple(Of HttpStatusCode, String)
         System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Dim client As HttpClient = New HttpClient()
         Dim httpResponse = client.SendAsync(request)
@@ -47,7 +47,7 @@ Public Class PostRequest
 
         If (httpResponse.Result.IsSuccessStatusCode) Then
             Dim response = httpResponse.Result.Content.ReadAsStringAsync()
-            Return New Tuple(Of String, String)(httpResponse.Result.StatusCode.ToString(), response.Result)
+            Return New Tuple(Of HttpStatusCode, String)(httpResponse.Result.StatusCode, response.Result)
         Else
             Debug.WriteLine("Error: PostRequest() to failed: " + httpResponse.Result.StatusCode.ToString())
             Return Nothing
