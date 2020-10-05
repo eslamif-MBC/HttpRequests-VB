@@ -1,5 +1,6 @@
 ﻿Imports System.Net
 Imports System.Net.Http
+Imports Newtonsoft.Json
 
 Public Class PostRequest
     Public RequestMimeType As String = "application/json"
@@ -46,10 +47,11 @@ Public Class PostRequest
         httpResponse.Wait()
 
         If (httpResponse.Result.IsSuccessStatusCode) Then
-            Dim response = httpResponse.Result.Content.ReadAsStringAsync()
-            Return New Tuple(Of HttpStatusCode, String)(httpResponse.Result.StatusCode, response.Result)
+            Dim jsonResponse = httpResponse.Result.Content.ReadAsStringAsync()
+            Dim jsonResponseDeserialized = JsonConvert.DeserializeObject(jsonResponse.Result).ToString()
+            Return New Tuple(Of HttpStatusCode, String)(httpResponse.Result.StatusCode, jsonResponseDeserialized)
         Else
-            Debug.WriteLine("Error: PostRequest() to failed: " + httpResponse.Result.StatusCode.ToString())
+            Debug.WriteLine("Error: PostRequest() failed: " + httpResponse.Result.StatusCode.ToString())
             Return Nothing
         End If
     End Function
