@@ -192,8 +192,8 @@
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Classes\GetRequest.vb" />
     <Compile Include="Classes\PostRequest.vb" />
-    <Compile Include="Classes\PostRequestWithBasicAuth.vb" />
     <Compile Include="Contact.aspx.designer.vb">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
