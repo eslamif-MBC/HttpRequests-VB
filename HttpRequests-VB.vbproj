@@ -192,6 +192,7 @@
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Classes\HelperClass.vb" />
     <Compile Include="Classes\HttpRequestExamples.vb" />
     <Compile Include="Classes\HttpRequests.vb" />
     <Compile Include="Contact.aspx.designer.vb">

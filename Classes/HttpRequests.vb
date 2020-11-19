@@ -123,20 +123,52 @@ Namespace Utility
         End Sub
 
         Private Function CallService(ByVal request As HttpRequestMessage) As Tuple(Of HttpStatusCode, String)
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+            Try
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
 
-            Dim client As HttpClient = New HttpClient()
-            Dim httpResponse = client.SendAsync(request)
-            httpResponse.Wait()
+                Dim client As HttpClient = New HttpClient()
+                Dim httpResponse = client.SendAsync(request)
+                httpResponse.Wait()
 
-            If (httpResponse.Result.IsSuccessStatusCode) Then
-                Dim jsonResponse = httpResponse.Result.Content.ReadAsStringAsync()
-                Dim jsonResponseDeserialized = JsonConvert.DeserializeObject(jsonResponse.Result).ToString()
-                Return New Tuple(Of HttpStatusCode, String)(httpResponse.Result.StatusCode, jsonResponseDeserialized)
-            Else
-                Debug.WriteLine("Error: CallService() failed: " + httpResponse.Result.StatusCode.ToString())
-                Return Nothing
-            End If
+                If (httpResponse.Result.IsSuccessStatusCode) Then
+                    Dim jsonResponse = httpResponse.Result.Content.ReadAsStringAsync()
+                    Dim jsonResponseDeserialized = JsonConvert.DeserializeObject(jsonResponse.Result).ToString()
+                    Return New Tuple(Of HttpStatusCode, String)(httpResponse.Result.StatusCode, jsonResponseDeserialized)
+                Else
+                    Debug.WriteLine("Error: CallService() failed: " + httpResponse.Result.StatusCode.ToString())
+                    Return Nothing
+                End If
+            Catch ex As HttpRequestException
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() HttpRequestException: " + HelperClass.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
+            Catch ex As HttpException
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() HttpException: " + HelperClass.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
+            Catch ex As Exception
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() Exception: " + HelperClass.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
+            End Try
         End Function
 #End Region
 
