@@ -141,7 +141,7 @@ Namespace Utility
             Catch ex As HttpRequestException
                 Using thisEventLog = New EventLog("Application")
 
-                    Dim errorMessage = "HTTPRequest's CallService() HttpRequestException: " + HelperClass.GetExceptionMessages(ex)
+                    Dim errorMessage = "HTTPRequest's CallService() HttpRequestException: " + Helper.GetExceptionMessages(ex)
                     thisEventLog.Source = "Application"
                     thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
 
@@ -151,7 +151,7 @@ Namespace Utility
             Catch ex As HttpException
                 Using thisEventLog = New EventLog("Application")
 
-                    Dim errorMessage = "HTTPRequest's CallService() HttpException: " + HelperClass.GetExceptionMessages(ex)
+                    Dim errorMessage = "HTTPRequest's CallService() HttpException: " + Helper.GetExceptionMessages(ex)
                     thisEventLog.Source = "Application"
                     thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
 
@@ -161,7 +161,7 @@ Namespace Utility
             Catch ex As Exception
                 Using thisEventLog = New EventLog("Application")
 
-                    Dim errorMessage = "HTTPRequest's CallService() Exception: " + HelperClass.GetExceptionMessages(ex)
+                    Dim errorMessage = "HTTPRequest's CallService() Exception: " + Helper.GetExceptionMessages(ex)
                     thisEventLog.Source = "Application"
                     thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
 

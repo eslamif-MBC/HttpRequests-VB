@@ -1,4 +1,4 @@
-﻿Public Class HelperClass
+﻿Public Class Helper
 
     ''' <summary>
     ''' Returns the Exception messages
