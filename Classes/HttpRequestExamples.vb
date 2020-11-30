@@ -43,6 +43,30 @@ Public Class HttpRequestExamples
         Debug.WriteLine(response.Item2)
     End Sub
 
+    Public Sub MakePostRequestWithBasicAuth()
+        Dim uri = ""
+        Dim basicAuthUsername = ""
+        Dim basicAuthPassword = ""
+        Dim carMake = "Toyota"
+        Dim carModel = "Celica"
+
+        '{"carMake":"Toyota","carModel":"Celica"}
+        Dim sb = New StringBuilder()
+        sb.Append("{")
+        sb.Append("""carMake""")
+        sb.Append(":")
+        sb.Append("""").Append(carMake).Append("""")
+        sb.Append(",")
+        sb.Append("""carModel""")
+        sb.Append(":")
+        sb.Append("""").Append(carModel).Append("""")
+        sb.Append("}")
+
+        Dim response = (New Utility.HttpRequests).MakePostRequestWithBasicAuth(uri, sb.ToString(), basicAuthUsername, basicAuthPassword)
+        Debug.WriteLine(response.Item1)
+        Debug.WriteLine(response.Item2)
+    End Sub
+
     Public Sub MakePostRequestWithAppIdAndKeyExample()
         Dim uri = ""
         Dim appId = ""

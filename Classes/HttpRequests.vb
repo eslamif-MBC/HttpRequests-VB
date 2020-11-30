@@ -200,9 +200,36 @@ Namespace Utility
                 Else
                     Return New Tuple(Of HttpStatusCode, String)(HttpStatusCode.OK, Nothing)
                 End If
+            Catch ex As HttpRequestException
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() HttpRequestException: " + Helper.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
+            Catch ex As HttpException
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() HttpException: " + Helper.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
             Catch ex As Exception
-                Debug.WriteLine("Error: CallService() failed. " & ex.Message)
-                Return New Tuple(Of HttpStatusCode, String)(HttpStatusCode.InternalServerError, Nothing)
+                Using thisEventLog = New EventLog("Application")
+
+                    Dim errorMessage = "HTTPRequest's CallService() Exception: " + Helper.GetExceptionMessages(ex)
+                    thisEventLog.Source = "Application"
+                    thisEventLog.WriteEntry(errorMessage, EventLogEntryType.Error)
+
+                    Debug.WriteLine(errorMessage)
+                    Return Nothing
+                End Using
             End Try
         End Function
 #End Region
